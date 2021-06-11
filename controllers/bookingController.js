@@ -59,7 +59,7 @@ exports.webhookCheckout = async (req, res, next) => {
             signature,
             process.env.STRIPE_WEBHOOK_SECERT
         );
-        if (event.type === 'checkout.session.complete') {
+        if (event.type === 'checkout.session.completed') {
             await createBookingCheckout(event.data.object);
         }
     } catch (err) {
