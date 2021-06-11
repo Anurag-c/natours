@@ -12,16 +12,14 @@ const signToken = (id) => {
     });
 };
 
-const cookieOptions = {
-    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-    secure: false, // only on https => true
-    httpOnly: true // cookie cannot be modified by browser
-};
-
-if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-
-const createAndSendToken = (user, statusCode, res) => {
+const createAndSendToken = (user, statusCode, req, res) => {
     const token = signToken(user._id);
+    const cookieOptions = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+        httpOnly: true // cookie cannot be modified by browser
+    };
+
+    if (req.secure || req.headers('x-forwarded-proto') === 'https') cookieOptions.secure = true;
 
     res.cookie('jwt', token, cookieOptions);
 
@@ -49,7 +47,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     const url = `${req.protocol}://${req.get('host')}/me`;
     await new Email(newUser, url).sendWelcome();
 
-    createAndSendToken(newUser, 201, res);
+    createAndSendToken(newUser, 201, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -62,7 +60,7 @@ exports.login = catchAsync(async (req, res, next) => {
     if (!user || !(await user.correctPassword(password, user.password)))
         return next(new AppError('Incorrect email or password', 401));
 
-    createAndSendToken(user, 200, res);
+    createAndSendToken(user, 200, req, res);
 });
 
 exports.logout = (req, res) => {
@@ -166,7 +164,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     await user.save();
 
     //4) Log the user in, send JWT
-    createAndSendToken(user, 201, res);
+    createAndSendToken(user, 201, req, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -183,7 +181,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     await user.save(); // password.changedAt is implemented in middleware
 
     // 3) log user in, send JWT
-    createAndSendToken(user, 201, res);
+    createAndSendToken(user, 201, req, res);
 });
 
 exports.isLoggedIn = async (req, res, next) => {

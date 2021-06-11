@@ -21,6 +21,8 @@ const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
+app.enable('trust proxy');
+
 // Data sanitization against XSS(cross side scripting)
 app.use(xss());
 
