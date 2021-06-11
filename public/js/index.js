@@ -1,5 +1,5 @@
 import '@babel/polyfill';
-import { login, logout } from './login';
+import { login, logout, signUp } from './login';
 import { updateSettings } from './updateSettings';
 import { displayMap } from './mapbox';
 import { bookTour } from './stripe';
@@ -9,9 +9,12 @@ import { showAlert } from './alert';
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
+const signupForm = document.querySelector('.form--signup');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
+const alertMessage = document.querySelector('body').dataset.alert;
+
 // DELEGATION
 if (mapBox) {
     const locations = JSON.parse(mapBox.dataset.locations);
@@ -23,6 +26,8 @@ if (loginForm) {
         e.preventDefault();
         const email = document.getElementById('email');
         const password = document.getElementById('password');
+        const loginBtn = document.getElementById('login');
+        loginBtn.textContent = 'Logging In...';
         await login(email.value, password.value);
     });
 }
@@ -31,6 +36,19 @@ if (logOutBtn) {
     logOutBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         await logout();
+    });
+}
+
+if (signupForm) {
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const passwordConfirm = document.getElementById('password').value;
+        const signupBtn = document.getElementById('signUp');
+        signupBtn.textContent = 'Signing Up...';
+        await signUp(name, email, password, passwordConfirm);
     });
 }
 
@@ -80,6 +98,4 @@ if (bookBtn) {
     });
 }
 
-const alertMessage = document.querySelector('body').dataset.alert;
-console.log(alertMessage);
 if (alertMessage.length > 0) showAlert('success', alertMessage, 15);
