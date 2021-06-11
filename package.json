@@ -1,0 +1,43 @@
+{
+    "name": "makingapi",
+    "version": "1.0.0",
+    "description": "Learning to make API",
+    "main": "app.js",
+    "scripts": {
+        "start": "nodemon server.js",
+        "start:prod": "SET NODE_ENV=production&&nodemon server.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js --hmr-port 8080",
+        "build:js": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js --hmr-port 8080"
+    },
+    "author": "Anurag Nampally",
+    "license": "ISC",
+    "dependencies": {
+        "@babel/polyfill": "^7.12.1",
+        "axios": "^0.21.1",
+        "bcrypt": "^5.0.1",
+        "cookie-parser": "^1.4.5",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "express-mongo-sanitize": "^2.1.0",
+        "express-rate-limit": "^5.2.6",
+        "helmet": "^4.6.0",
+        "hpp": "^0.2.3",
+        "html-to-text": "^8.0.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.12.11",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.1",
+        "nodemailer": "^6.6.1",
+        "pug": "^3.0.2",
+        "sharp": "^0.28.3",
+        "slugify": "^1.5.3",
+        "stripe": "^8.154.0",
+        "validator": "^13.6.0",
+        "xss-clean": "^0.1.1"
+    },
+    "devDependencies": {
+        "parcel-bundler": "^1.12.5"
+    }
+}
