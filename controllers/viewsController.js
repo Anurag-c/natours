@@ -23,7 +23,6 @@ exports.getTour = catchAsync(async (req, res, next) => {
         path: 'reviews',
         fields: 'review rating user'
     });
-    console.log(tour);
     if (!tour) {
         return next(new AppError('There is no tour with that name', 404));
     }
@@ -53,7 +52,6 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
     const bookings = await Booking.find({ user: req.user.id });
     const tourIds = bookings.map((el) => el.tour);
     const tours = await Tour.find({ _id: { $in: tourIds } });
-    console.log(bookings, tourIds, tours);
     res.status(200).render('overview', {
         title: 'My Tours',
         tours
