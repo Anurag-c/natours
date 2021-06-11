@@ -57,7 +57,7 @@ exports.webhookCheckout = async (req, res, next) => {
         event = stripe.webhooks.constructEvent(
             req.body,
             signature,
-            process.env.STRIPE_WEBHOOK_SECERT
+            process.env.STRIPE_WEBHOOK_SECRET
         );
         if (event.type === 'checkout.session.completed') {
             await createBookingCheckout(event.data.object);
@@ -66,5 +66,4 @@ exports.webhookCheckout = async (req, res, next) => {
         return res.status(400).send('Webhook error: ' + err.message);
     }
     res.status(200).json({ received: true });
-    next();
 };
