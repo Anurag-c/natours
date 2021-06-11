@@ -19,7 +19,7 @@ const createAndSendToken = (user, statusCode, req, res) => {
         httpOnly: true // cookie cannot be modified by browser
     };
 
-    if (req.secure || req.headers('x-forwarded-proto') === 'https') cookieOptions.secure = true;
+    //if (req.secure || req.headers('x-forwarded-proto') === 'https') cookieOptions.secure = true;
 
     res.cookie('jwt', token, cookieOptions);
 
