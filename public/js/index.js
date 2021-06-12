@@ -29,6 +29,7 @@ if (loginForm) {
         const loginBtn = document.getElementById('login');
         loginBtn.textContent = 'Logging In...';
         await login(email.value, password.value);
+        if (loginBtn) loginBtn.textContent = 'Log in';
     });
 }
 
@@ -49,6 +50,7 @@ if (signupForm) {
         const signupBtn = document.getElementById('signUp');
         signupBtn.textContent = 'Signing Up...';
         await signUp(name, email, password, passwordConfirm);
+        if (signupBtn) signupBtn.textContent = 'Sign Up';
     });
 }
 
